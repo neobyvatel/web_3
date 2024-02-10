@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>WeatherApp</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/css/style.css" />
   </head>
   <body>
     <header>
@@ -106,5 +107,23 @@
         </div>
       </nav>
     </header>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const button = document.querySelector(
+          "[data-collapse-toggle='mobile-menu-2']"
+        );
+        const menu = document.getElementById("mobile-menu-2");
+
+        // Toggle function
+        function toggleMenu() {
+          menu.classList.toggle("hidden");
+        }
+
+        // Event listener for button click
+        button.addEventListener("click", function () {
+          toggleMenu();
+        });
+      });
+    </script>
   </body>
 </html>
