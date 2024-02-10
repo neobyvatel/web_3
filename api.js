@@ -48,7 +48,7 @@ async function getWeatherByCity(city) {
   };
 }
 
-async function getUser(username) {
+async function getGithubUser(username) {
   try {
     const response = await axios.get(
       `https://api.github.com/users/${username}`
