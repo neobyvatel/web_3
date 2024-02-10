@@ -3,12 +3,111 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>WeatherApp</title>
+    <title>Stock Information</title>
     <% include('../components/head') %>
+    <style>
+      /* Dark theme */
+      body {
+        background-color: #1a202c;
+        color: #e2e8f0;
+      }
+
+      input,
+      button {
+        background-color: #4a5568;
+        color: #e2e8f0;
+        border-color: #4a5568;
+      }
+
+      input:focus,
+      button:focus {
+        outline-color: #63b3ed;
+      }
+
+      /* Additional styling for the Stock information container */
+      #stockInfoContainer {
+        background-color: #2d3748;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        margin-top: 20px;
+      }
+
+      #stockInfoContainer h2 {
+        color: #63b3ed;
+      }
+
+      #stockInfoContainer p {
+        color: #a0aec0;
+      }
+    </style>
   </head>
   <body class="flex flex-col min-h-screen">
     <header><%- include('../components/navbar') %></header>
-    <main class="flex-1"></main>
+    <main class="flex-1">
+      <div class="container mx-auto px-4">
+        <h1 class="text-2xl text-white font-bold mb-4 mt-5">
+          Stock Information
+        </h1>
+        <form id="stockSearchForm" class="mb-4">
+          <input
+            type="text"
+            id="symbolInput"
+            placeholder="Enter stock symbol"
+            required
+            class="border border-gray-300 px-4 py-2 rounded-md"
+          />
+          <button
+            type="submit"
+            class="bg-blue-500 text-white px-4 py-2 rounded-md"
+          >
+            Search
+          </button>
+        </form>
+        <div id="stockInfoContainer"></div>
+        <!-- Container for Stock information -->
+      </div>
+    </main>
     <footer><%- include('../components/footer') %></footer>
+
+    <script>
+      document
+        .getElementById("stockSearchForm")
+        .addEventListener("submit", async function (event) {
+          event.preventDefault();
+
+          const symbol = document.getElementById("symbolInput").value;
+
+          try {
+            const stockInfoResponse = await fetch(`/api/stocks/${symbol}`);
+            const stockInfo = await stockInfoResponse.json();
+
+            if (stockInfoResponse.ok) {
+              // Display Stock information inside the container
+              document.getElementById("stockInfoContainer").innerHTML = `
+                        <div id="stockInfoContainer" class="rounded-lg overflow-hidden bg-gray-800 shadow-lg p-6">
+                            <h2 class="text-xl font-semibold mb-2 text-blue-400">${stockInfo.name} (${stockInfo.symbol})</h2>
+                            <p class="text-gray-400">Exchange: ${stockInfo.exchange}</p>
+                            <p class="text-gray-400">Country: ${stockInfo.country}</p>
+                            <p class="text-gray-400">Industry: ${stockInfo.industry}</p>
+                            <p class="text-gray-400">Market Cap: ${stockInfo.marketcap}</p>
+                            <p class="text-gray-400">Sector: ${stockInfo.sector}</p>
+                            <p class="text-gray-400">Description: ${stockInfo.description || "N/A"}</p>
+                        </div>
+                    `;
+            } else {
+              // Display error message
+              document.getElementById("stockInfoContainer").innerHTML =
+                `<p class="text-red-500">Stock not found</p>`;
+            }
+          } catch (error) {
+            console.error(error);
+
+            // Display error message
+            document.getElementById("stockInfoContainer").innerHTML =
+              `<p class="text-red-500">Error fetching stock information</p>`;
+          }
+        });
+    </script>
   </body>
 </html>

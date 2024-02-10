@@ -1,112 +1,106 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>WeatherApp</title>
-    <% include('../components/head') %>
-  </head>
-  <body class="flex flex-col min-h-screen">
-    <header class="mb-5"><%- include('../components/navbar') %></header>
-    <main class="flex-1">
-      <form class="max-w-sm mx-auto" action="/weather" method="post">
+    <%- include ('../components/head.ejs') %>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <style>
+        body, input, label, small, p, div {
+            color: white;
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen ">
+<header class="mb-5"><%- include('../components/navbar') %></header>
+<main class="flex-1 flex justify-center items-center flex-col">
+    <form class="max-w-sm mx-auto" action="/weather" method="post">
         <div class="mb-5">
-          <label
-            for="large-input"
-            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            >Search weather by city</label
-          >
-          <input
-            type="text"
-            id="city"
-            class="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-base focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          />
+            <label
+                for="large-input"
+                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            >Search weather by city</label>
+            <input
+                type="text"
+                id="city"
+                name="city"
+                class="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-base focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            />
         </div>
-      </form>
-      <% if (data) { %>
-        <div class="container mt-4 rounded"> 
-            <div class="row d-flex justify-content-center rounded">
-                <div class="row card0 rounded">
-                    <div class="card1 col-lg-8 col-md-7" id="card1">
-                        <small><img src="/images/logo.png" height="28">&nbsp;&nbsp;The Weather App</small>
-                        <div class="text-center">
-                            <img class="image mt-5" src="https://i.imgur.com/M8VyA2h.png">
-                        </div>
-                        <div class="row px-3 mt-3 mb-3">
-                            <h1 class="display-2"><%= data.temperature %>&#176;C</h1>
-                            <small>Feels like <%= data.feels_like%>&#176;C</small>
-                            <div class="d-flex flex-column mr-2">
-                                <h2 class="mt-3 mb-0"><%= data.name %></h2>
-                                <small><%= data.time %></small>
-                            </div>
-                            <div class="d-flex flex-column text-center">
-                                <h3 class="fa fa-sun-o mt-4"></h3>
-                                <div class="fs-4"><%= data.description %></div>
-                            </div>
-                        </div>
+    </form>
+    <% if (data) { %>
+    <div class="container mt-4 rounded bg-gray-700 p-3">
+        <div class="row justify-center rounded">
+            <div class="col-lg-8 col-md-7 card0 rounded">
+                <small>&nbsp;&nbsp;The Weather App</small>
+                
+                <div class="row px-3 mt-3 mb-3">
+                    <h1 class="text-6xl"><%= data.temperature %>&#176;C</h1>
+                    <small>Feels like <%= data.feels_like%>&#176;C</small>
+                    <div class="flex flex-col mr-2">
+                        <h2 class="mt-3 mb-0"><%= data.name %></h2>
+                        <small><%= data.time %></small>
                     </div>
-                    <div class="card2 col-lg-4 col-md-5" style="background-color: rgba(0,0,0,0.15);">
-        
-                            <div class="line my-3 bg-dark"></div>
-        
-                            <p>Weather Details</p>
-                            <div class="row">
-                                <p class="light-text"><i class="fa-solid fa-cloud"></i>&nbsp;&nbsp;Cloudy</p>
-                                <p class="ml-auto"><%= data.cloudiness %>%</p>
-                            </div>
-                            <div class="row">
-                                <p class="light-text"><i class="fa-solid fa-droplet"></i>&nbsp;&nbsp;Humidity</p>
-                                <p class="ml-auto"><%= data.humidity %>%</p>
-                            </div>
-                            <div class="row">
-                                <p class="light-text"><i class="fa-solid fa-wind"></i>&nbsp;&nbsp;Wind</p>
-                                <p class="ml-auto"><%= data.wind_speed %> m/s&nbsp;&nbsp;<i class="fa-regular fa-compass"></i>&nbsp;&nbsp;<%= data.wind_direction %> <%= data.wind_deg %>°</p>
-                            </div>
-                            <div class="row">
-                                <p class="light-text"><i class="fa-solid fa-temperature-low"></i>&nbsp;&nbsp;Max and min temperatures</p>
-                                <p class="ml-auto"><%= data.maximum_temperature %>&#176;C&nbsp;&nbsp;<i class="fa-solid fa-cloud"></i>&nbsp;&nbsp;<%= data.minimum_temperature %>&#176;C</p>
-                            </div>
-                            <div class="row">
-                                <p class="light-text"><i class="fa-solid fa-weight-hanging"></i>&nbsp;&nbsp;Pressure</p>
-                                <p class="ml-auto"><%= data.pressure %> hPa</p>
-                            </div>
-                            <div class="row">
-                                <p class="light-text"><i class="fa-regular fa-sun"></i>&nbsp;&nbsp;Sunrise</p>
-                                <p class="ml-auto"><%= data.sunrise %></p>
-                            </div>
-                            <div class="row">
-                                <p class="light-text"><i class="fa-regular fa-moon"></i>&nbsp;&nbsp;Sunset</p>
-                                <p class="ml-auto"><%= data.sunset %></p>
-                            </div>
-                            <div class="row">
-                                <p class="light-text"><img src="https://flagcdn.com/16x12/<%= data.country.toLowerCase() %>.png" width="16" height="12" alt="<%= data.country %>">&nbsp;&nbsp;Country</p>
-                                <p class="ml-auto"><%= data.country %></p>
-                            </div>
-                            <div class="line mt-3 bg-dark"></div>
-                        </div>
+                    <div class="flex flex-col text-center">
+                        <h3 class="fa fa-sun-o mt-4"></h3>
+                        <div class="text-lg"><%= data.description %></div>
+                    </div>
                 </div>
             </div>
-            <iframe src="https://yandex.ru/map-widget/v1/?ll=<%= data.longitude %>%2C<%= data.latitude %>&z=8" width="100%" height="260" frameborder="1" allowfullscreen="false" class="rounded rounded-4"></iframe>
+            <div class="col-lg-4 col-md-5 card2 rounded p-3" style="background-color: rgba(0,0,0,0.15);">
+                <div class="line my-3 bg-dark"></div>
+                <p>Weather Details</p>
+                <div class="flex justify-between">
+                    <p class="light-text"><i class="fa-solid fa-cloud"></i>&nbsp;&nbsp;Cloudy</p>
+                    <p><%= data.cloudiness %>%</p>
+                </div>
+                <div class="flex justify-between">
+                    <p class="light-text"><i class="fa-solid fa-droplet"></i>&nbsp;&nbsp;Humidity</p>
+                    <p><%= data.humidity %>%</p>
+                </div>
+                <div class="flex justify-between">
+                    <p class="light-text"><i class="fa-solid fa-wind"></i>&nbsp;&nbsp;Wind</p>
+                    <p><%= data.wind_speed %> m/s&nbsp;&nbsp;<i class="fa-regular fa-compass"></i>&nbsp;&nbsp;<%= data.wind_direction %> <%= data.wind_deg %>°</p>
+                </div>
+                <div class="flex justify-between">
+                    <p class="light-text"><i class="fa-solid fa-temperature-low"></i>&nbsp;&nbsp;Max and min temperatures</p>
+                    <p><%= data.maximum_temperature %>&#176;C&nbsp;&nbsp;<i class="fa-solid fa-cloud"></i>&nbsp;&nbsp;<%= data.minimum_temperature %>&#176;C</p>
+                </div>
+                <div class="flex justify-between">
+                    <p class="light-text"><i class="fa-solid fa-weight-hanging"></i>&nbsp;&nbsp;Pressure</p>
+                    <p><%= data.pressure %> hPa</p>
+                </div>
+                <div class="flex justify-between">
+                    <p class="light-text"><i class="fa-regular fa-sun"></i>&nbsp;&nbsp;Sunrise</p>
+                    <p><%= data.sunrise %></p>
+                </div>
+                <div class="flex justify-between">
+                    <p class="light-text"><i class="fa-regular fa-moon"></i>&nbsp;&nbsp;Sunset</p>
+                    <p><%= data.sunset %></p>
+                </div>
+                <div class="flex justify-between">
+                    <p class="light-text"><img src="https://flagcdn.com/16x12/<%= data.country.toLowerCase() %>.png" width="16" height="12" alt="<%= data.country %>">&nbsp;&nbsp;Country</p>
+                    <p><%= data.country %></p>
+                </div>
+                <div class="line mt-3 bg-dark"></div>
+            </div>
         </div>
-        
-
+        <iframe src="https://yandex.ru/map-widget/v1/?ll=<%= data.longitude %>%2C<%= data.latitude %>&z=8" width="100%" height="260" frameborder="1" allowfullscreen="false" class="rounded rounded-4"></iframe>
+    </div>
     <% } else { %>
-
-        <div style="height:60vh"></div>
-
+    <div style="height:60vh"></div>
     <% } %>
-
     <% if (error) { %>
-        <script>
-            Swal.fire({
-                title: "An error occured!",
-                text: "<%= error %>",
-                icon: "error"
-            });
-        </script>
+    <script>
+        Swal.fire({
+            title: "An error occured!",
+            text: "<%= error %>",
+            icon: "error"
+        });
+    </script>
     <% } %>
-
-    </main>
-    <footer><%- include('../components/footer') %></footer>
-  </body>
+</main>
+<footer><%- include('../components/footer') %></footer>
+</body>
 </html>

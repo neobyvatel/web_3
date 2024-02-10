@@ -1,13 +1,13 @@
 const axios = require("axios");
-const WEATHER_API_KEY = "e31236ca2959caf5178b8298a93073e8";
-const POLYGONIO_API_KEY = "ZLmqRJ8Hx6JTQQIVvjeZ3a0mVLLNrQtM";
+const OPENWEATHER_KEY = "75ae233af45a22eadf235214a7ab9d18";
+const POLYGONIO_API_KEY = "h0hrGc3VH6O92rxZBN3ExnOeZpkyiMeP";
 
 async function getWeatherByCity(city) {
   let response,
     responseData = null;
   try {
     response = await axios.get(
-      `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&lang=en&appid=${WEATHER_API_KEY}`
+      `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&lang=en&appid=${OPENWEATHER_KEY}`
     );
     responseData = response?.data;
   } catch {
@@ -71,3 +71,8 @@ async function getStockInfo(symbol) {
     throw error;
   }
 }
+module.exports = {
+  getWeatherByCity,
+  getGithubUser,
+  getStockInfo,
+};

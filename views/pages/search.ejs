@@ -3,12 +3,112 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>WeatherApp</title>
+    <title>Search GitHub Users</title>
     <% include('../components/head') %>
+    <style>
+      /* Dark theme */
+      body {
+        background-color: #1a202c;
+        color: #e2e8f0;
+      }
+
+      input,
+      button {
+        background-color: #4a5568;
+        color: #e2e8f0;
+        border-color: #4a5568;
+      }
+
+      input:focus,
+      button:focus {
+        outline-color: #63b3ed;
+      }
+
+      /* Additional styling for the GitHub user data container */
+      #userDataContainer {
+        background-color: #2d3748;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        margin-top: 20px;
+      }
+
+      #userDataContainer h2 {
+        color: #63b3ed;
+      }
+
+      #userDataContainer p {
+        color: #a0aec0;
+      }
+    </style>
   </head>
   <body class="flex flex-col min-h-screen">
     <header><%- include('../components/navbar') %></header>
-    <main class="flex-1"></main>
+    <main class="flex-1">
+      <div class="container mx-auto px-4">
+        <h1 class="text-2xl text-white font-bold mb-4 mt-5">
+          Search GitHub Users
+        </h1>
+        <form id="githubSearchForm" class="mb-4">
+          <input
+            type="text"
+            id="usernameInput"
+            placeholder="Enter GitHub username"
+            required
+            class="border border-gray-300 px-4 py-2 rounded-md"
+          />
+          <button
+            type="submit"
+            class="bg-blue-500 text-white px-4 py-2 rounded-md"
+          >
+            Search
+          </button>
+        </form>
+        <div id="userDataContainer"></div>
+        <!-- Container for GitHub user data -->
+      </div>
+    </main>
     <footer><%- include('../components/footer') %></footer>
+
+    <script>
+      document
+        .getElementById("githubSearchForm")
+        .addEventListener("submit", async function (event) {
+          event.preventDefault();
+
+          const username = document.getElementById("usernameInput").value;
+
+          try {
+            const userDataResponse = await fetch(
+              `/api/github/users/${username}`
+            );
+            const userData = await userDataResponse.json();
+
+            if (userDataResponse.ok) {
+              // Display GitHub user data inside the container
+              document.getElementById("userDataContainer").innerHTML = `
+                <div id="userDataContainer" class="rounded-lg overflow-hidden bg-gray-400 shadow-lg p-6">
+                  <h2 class="text-xl font-semibold mb-2 text-blue-400">${userData.login}</h2>
+                  <p class="text-gray-400">Name: ${userData.name || "N/A"}</p>
+                  <p class="text-gray-400">Location: ${userData.location || "N/A"}</p>
+                  <p class="text-gray-400">Bio: ${userData.bio || "N/A"}</p>
+                  <p class="text-gray-400">Followers: ${userData.followers || 0}</p>
+                  <p class="text-gray-400">Public Repositories: ${userData.public_repos || 0}</p>
+                </div>
+              `;
+            } else {
+              // Display error message
+              document.getElementById("userDataContainer").innerHTML =
+                `<p class="text-red-500">User not found</p>`;
+            }
+          } catch (error) {
+            console.error(error);
+
+            // Display error message
+            document.getElementById("userDataContainer").innerHTML =
+              `<p class="text-red-500">Error fetching user data</p>`;
+          }
+        });
+    </script>
   </body>
 </html>

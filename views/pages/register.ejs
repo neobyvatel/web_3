@@ -13,7 +13,7 @@
       <h1
         class="text-3xl font-semibold text-gray-900 dark:text-white text-center mb-5"
       >
-        Register
+        Sign up
       </h1>
 
       <div class="max-w-sm mx-auto">
@@ -74,5 +74,15 @@
     </main>
 
     <footer class=""><%- include('../components/footer') %></footer>
+    <% if (error) { %>
+      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+      <script>
+          Swal.fire({
+              title: "An error occured!",
+              text: "<%= error %>",
+              icon: "error"
+          });
+      </script>
+  <% } %>
   </body>
 </html>
